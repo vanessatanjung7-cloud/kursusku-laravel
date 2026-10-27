@@ -1,0 +1,70 @@
+<!doctype html><html><head><meta charset="utf-8">
+<style>
+@page { size: 1440px 1400px; margin:0 }
+body{font-family:Arial,sans-serif;background:#f1f5f9;margin:0;padding:32px;color:#0f172a}
+h1{margin-top:0} .grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.card{background:white;border-radius:16px;padding:20px;box-shadow:0 10px 30px #0001}
+pre{white-space:pre-wrap;word-break:break-word;background:#0f172a;color:#d1fae5;padding:16px;border-radius:12px;font-size:13px;line-height:1.45}
+.full{grid-column:1/-1}
+.badge{display:inline-block;background:#ccfbf1;color:#115e59;padding:6px 10px;border-radius:999px;font-weight:700}
+</style></head><body>
+<span class="badge">EVIDENCE WEEK 07</span><h1>Route → Controller → Blade</h1>
+<div class="grid">
+<div class="card"><h2>routes/web.php</h2><pre>&lt;?php
+
+use App\Http\Controllers\HomeController;
+use Illuminate\Support\Facades\Route;
+
+Route::get(&#x27;/&#x27;, [HomeController::class, &#x27;index&#x27;])-&gt;name(&#x27;home&#x27;);
+</pre></div>
+<div class="card"><h2>HomeController.php</h2><pre>&lt;?php
+
+namespace App\Http\Controllers;
+
+use Illuminate\View\View;
+
+class HomeController extends Controller
+{
+    public function index(): View
+    {
+        $featured = [
+            [
+                &#x27;code&#x27; =&gt; &#x27;WEB-01&#x27;,
+                &#x27;name&#x27; =&gt; &#x27;Web Dasar&#x27;,
+                &#x27;description&#x27; =&gt; &#x27;Belajar struktur HTML dan fondasi pengembangan web.&#x27;,
+            ],
+            [
+                &#x27;code&#x27; =&gt; &#x27;PHP-01&#x27;,
+                &#x27;name&#x27; =&gt; &#x27;PHP Dasar&#x27;,
+                &#x27;description&#x27; =&gt; &#x27;Belajar variabel, operator, function, form, dan alur server-side.&#x27;,
+            ],
+            [
+                &#x27;code&#x27; =&gt; &#x27;LAR-01&#x27;,
+                &#x27;name&#x27; =&gt; &#x27;Laravel Fundamental&#x27;,
+                &#x27;description&#x27; =&gt; &#x27;Mengenal framework, route, controller, Blade, dan pola MVC.&#x27;,
+            ],
+            [
+                &#x27;code&#x27; =&gt; &#x27;UI-01&#x27;,
+                &#x27;name&#x27; =&gt; &#x27;UI Web Dasar&#x27;,
+                &#x27;description&#x27; =&gt; &#x27;Belajar prinsip tampilan web yang rapi.&#x27;,
+            ],
+        ];
+
+        return view(&#x27;home&#x27;, compact(&#x27;featured&#x27;));
+    }
+}
+</pre></div>
+<div class="card full"><h2>Source check benar-benar dijalankan</h2><pre>PASS | routes/web.php exists
+PASS | HomeController exists
+PASS | home.blade.php exists
+PASS | public css exists
+PASS | public image exists
+PASS | named route home
+PASS | route points HomeController
+PASS | controller returns home view
+PASS | controller sends featured data
+PASS | Blade loops featured
+PASS | Blade uses route(home)
+PASS | Blade uses asset helper
+</pre></div>
+</div></body></html>
