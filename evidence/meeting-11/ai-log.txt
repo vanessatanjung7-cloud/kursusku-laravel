@@ -1,0 +1,29 @@
+﻿Bantuan AI - Praktikum Laravel CRUD Lanjutan, Pertemuan 11
+Tanggal: 11 November 2026
+
+Ringkasan pemeriksaan dan perubahan:
+- Memeriksa struktur project, composer.json, konfigurasi DB, model, controller, routes, views, migration, dan testing.
+- Laravel 12.70.1 dan PHP CLI 8.2.12 terpasang. Konfigurasi koneksi database di .env tidak diubah.
+- File artisan ditemukan berisi isi README, bukan entry point Laravel. File dipulihkan agar perintah Artisan dapat berjalan.
+- Resource route Course dan Form Request ditambahkan/diperbaiki. Request lama berada pada direktori singular yang tidak cocok dengan PSR-4 (App\Http\Requests).
+- Tidak tersedia migration courses. Migration add-only untuk `courses` ditambahkan. Migration users yang sudah ada juga membuat tabel sessions yang diperlukan konfigurasi lokal. Migration normal dijalankan pada file SQLite baru; tidak menjalankan migrate:fresh atau db:wipe.
+- View lama berada di resources/view (singular), sedangkan Laravel mencari resources/views. View yang ada disalin agar tetap tersedia; halaman CRUD ditambahkan pada lokasi yang dikenali Laravel.
+- CRUD memakai Route Model Binding, validated() Form Request, feedback error, flash message, dan method spoofing DELETE/PUT.
+- Testing menggunakan database SQLite in-memory menurut phpunit.xml. APP_KEY test ditetapkan terpisah di phpunit.xml. APP_KEY lokal yang awalnya kosong diisi melalui `php artisan key:generate`; kredensial/koneksi DB di .env tetap.
+- Layout melewati pemuatan Vite hanya dalam environment testing sehingga feature tests dapat merender Blade tanpa manifest build. Dependency npm dipasang dari lockfile dan Vite build berhasil.
+- File database SQLite sebelumnya belum ada; file baru dibuat lalu migration users/cache/jobs/courses berhasil diterapkan.
+
+Verifikasi:
+- `php artisan route:list --name=courses`: resource index/create/store/show/edit/update/destroy dan endpoint availability terdaftar.
+- Syntax check: 29 file PHP lulus.
+- `php artisan test`: 24 test lulus, 0 gagal, 90 assertions. Tambahan audit menguji create flash success, validation feedback ketujuh field, dan seeder lengkap/idempotent.
+- HTTP smoke test `/courses` dan `/courses/create` mengembalikan 200; manifest dan URL CSS tersedia.
+- Pemeriksaan screenshot Edge nyata pada 1365x900 dan 390x844 menemukan tombol tambah terpotong di mobile; layout header dan tombol navigasi diperbaiki, lalu screenshot ulang diverifikasi.
+- Tombol menu mobile ditekan melalui Chrome DevTools Protocol; `aria-expanded` menjadi `true` dan navigasi terbuka. Screenshot ada di `evidence/meeting-11/screenshots/`.
+- Seeder idempotent menambahkan 15 course lengkap; `php artisan db:seed` dijalankan dan hitungan database diverifikasi tetap 15 setelah alur bukti.
+- Untuk bukti CRUD browser, `AUDIT-DUMMY` dibuat dari form, ditampilkan di detail/edit, diupdate, lalu dihapus melalui tombol hapus. Screenshot update/delete memperlihatkan pesan sukses; dummy terhapus dan 15 course katalog tetap ada.
+- Screenshot pengumpulan: `index-course.png`, `detail-course.png`, `edit-course.png`, `update-success.png`, dan `delete-success.png`.
+
+Catatan sumber:
+- Implementasi dicocokkan dengan spesifikasi praktikum yang diberikan. Screenshot browser nyata disertakan; alur CRUD automated dan browser sama-sama dijalankan.
+

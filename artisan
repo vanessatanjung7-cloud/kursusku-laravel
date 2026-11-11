@@ -1,29 +1,12 @@
-# KursusKu
-Project praktikum Pemrograman Web III.
+#!/usr/bin/env php
+<?php
 
-## Requirement
-- PHP 8.3 atau lebih baru
-- Composer
-- Laravel
-- Laragon / web server lokal
+use Symfony\Component\Console\Input\ArgvInput;
 
-## Cara Menjalankan
-1. Buka terminal pada folder project.
-2. Jalankan: composer install
-3. Salin .env.example menjadi .env jika diperlukan.
-4. Jalankan: php artisan key:generate
-5. Jalankan: php artisan serve
-6. Buka alamat yang ditampilkan terminal.
+define('LARAVEL_START', microtime(true));
 
-## Fitur Milestone 7
-- Named route `home`
-- HomeController@index
-- Blade landing page
-- Data kursus dari controller
-- Asset CSS dan image
+require __DIR__.'/vendor/autoload.php';
 
-## Belum Dikerjakan
-- Database
-- CRUD
-- Authentication
-- Relasi data
+$status = (require_once __DIR__.'/bootstrap/app.php')->handleCommand(new ArgvInput);
+
+exit($status);

@@ -55,8 +55,6 @@ class CourseController extends Controller
 
     public function show(Course $course): View
     {
-        $course->loadCount('enrollments');
-
         return view('courses.show', compact('course'));
     }
 
@@ -78,7 +76,7 @@ class CourseController extends Controller
         $course->delete();
 
         return to_route('courses.index')
-            ->with('success', 'Kursus berhasil dihapus. Enrollment terkait ikut dihapus oleh foreign key cascade.');
+            ->with('success', 'Kursus berhasil dihapus.');
     }
 
     public function availability(Course $course): JsonResponse
