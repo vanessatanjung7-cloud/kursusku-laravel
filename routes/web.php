@@ -40,4 +40,4 @@ Route::get('/courses/{course}/availability', [CourseController::class, 'availabi
 Route::resource('courses', CourseController::class);
 Route::resource('participants', ParticipantController::class)->only(['index']);
 Route::resource('enrollments', EnrollmentController::class)
-    ->only(['index', 'create', 'store']);
+    ->only(['index', 'create', 'store', 'show', 'edit', 'update', 'destroy']);

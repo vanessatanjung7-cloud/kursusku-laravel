@@ -36,3 +36,10 @@ KEAMANAN DATA
 PEKERJAAN MANUAL
 - Bila dosen meminta bukti visual interaksi transaksi, screenshot pesan sukses/duplikasi enrollment belum direkam pada sesi browser; skenarionya lulus automated feature test.
 - Pencocokan isi PDF secara literal memerlukan pembacaan PDF secara manual karena parser PDF tidak tersedia.
+
+PENAMBAHAN SESUDAH AUDIT NAVIGASI
+- Melengkapi Enrollment menjadi resource CRUD: daftar, tambah, detail, edit/update, dan hapus dengan model binding, validasi pasangan unik saat update, CSRF/method spoofing, konfirmasi, dan flash message.
+- Menambahkan menu Kelola Enrollment dan actions detail/edit/delete di daftar.
+- Menambahkan `EnrollmentSeeder` berisi 15 pasangan unik berbasis tiga peserta contoh dan lima course open; seeder memakai `firstOrCreate` dan ditambahkan ke `DatabaseSeeder`.
+- Menjalankan seeder pada database lokal tanpa migration destruktif. Hitungan aktual: 15 Course, 3 Participant, 16 Enrollment (15 contoh baru + 1 record lama yang dipertahankan).
+- Run final `php artisan test`: 55 passed, 0 failed, 232 assertions; termasuk tests detail/edit/update/delete dan seeder idempotent. SQLite in-memory.

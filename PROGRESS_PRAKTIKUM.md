@@ -71,3 +71,17 @@ Pembaruan: 12 November 2026.
 | [!] | Ekstraksi teks langsung dari PDF | File PDF terlampir ditemukan, tetapi lingkungan ini tidak memiliki PDF text extractor. Pengerjaan dicocokkan dengan instruksi Pertemuan 12 lengkap yang ditempelkan pengguna; pemeriksaan literal isi PDF sebaiknya dicocokkan manual bila PDF memiliki ketentuan tambahan. |
 | [!] | Screenshot alur sukses/duplikasi untuk laporan | Screenshot halaman tersedia. Jika dosen meminta bukti visual transaksi, ambil screenshot setelah pesan sukses dan setelah validasi duplikasi; alur tersebut sudah lulus automated test. |
 
+## Penyelesaian Enrollment CRUD dan data contoh
+
+Pembaruan: 12 November 2026.
+
+| Status | Pekerjaan | Verifikasi / catatan |
+|---|---|---|
+| [x] | Enrollment resource CRUD lengkap | Route index/create/store/show/edit/update/destroy, route model binding, halaman detail/edit, update, delete CSRF + DELETE + konfirmasi, dan flash sukses tersedia. |
+| [x] | Validasi update enrollment | Peserta/kursus tervalidasi, status dibatasi, enrollment dapat mempertahankan pasangan sendiri, dan pasangan duplikat ditolak. Dibuktikan lewat feature tests. |
+| [x] | Menu Kelola Enrollment | Navbar dan halaman daftar menghubungkan laporan, detail, edit, tambah, dan hapus enrollment. |
+| [x] | 15 data enrollment contoh | `EnrollmentSeeder` membuat 15 pasangan peserta-kursus via `firstOrCreate`, dipanggil oleh `DatabaseSeeder`, aman dijalankan ulang. |
+| [x] | Data lokal diverifikasi | Database lokal berisi 15 Course, 3 Participant, dan 16 Enrollment: 15 data contoh baru serta 1 data lama yang tetap dipertahankan. |
+| [x] | Pengujian final | `php artisan test`: 55 passed, 0 failed, 232 assertions menggunakan SQLite in-memory. Test mencakup detail/edit/update/delete dan seeder 15 data idempotent. |
+| [x] | Route, syntax, dan asset | Route resource diperiksa; PHP lint dan `npm.cmd run build` berhasil. Tidak menjalankan `migrate:fresh` atau `db:wipe`. |
+

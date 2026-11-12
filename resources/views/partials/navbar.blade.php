@@ -35,8 +35,8 @@
                        @if (request()->routeIs('enrollments.create')) aria-current="page" @endif>Tambah Enrollment</a>
                 </li>
                 <li class="nav-item">
-                    <a @class(['nav-link', 'active' => request()->routeIs('enrollments.index')]) href="{{ route('enrollments.index') }}"
-                       @if (request()->routeIs('enrollments.index')) aria-current="page" @endif>Laporan Enrollment</a>
+                    <a @class(['nav-link', 'active' => request()->routeIs('enrollments.index', 'enrollments.show', 'enrollments.edit')]) href="{{ route('enrollments.index') }}"
+                       @if (request()->routeIs('enrollments.index', 'enrollments.show', 'enrollments.edit')) aria-current="page" @endif>Kelola Enrollment</a>
                 </li>
             </ul>
         </div>

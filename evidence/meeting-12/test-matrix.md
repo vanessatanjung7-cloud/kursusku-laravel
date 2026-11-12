@@ -26,6 +26,11 @@ Tanggal verifikasi: 12 November 2026. Semua test feature menggunakan SQLite in-m
 | 18 | Hapus Participant menghapus Enrollment terkait tetapi mempertahankan Course | PASS |
 | 19 | ParticipantSeeder aman dijalankan berulang dan menghasilkan 3 data | PASS |
 | 20 | Route/form pendaftaran lama `/pendaftaran` tetap tersedia | PASS |
+| 21 | Halaman detail dan edit enrollment dengan route model binding | PASS |
+| 22 | Update peserta/kursus/status dan flash sukses | PASS |
+| 23 | Update boleh mempertahankan pasangan saat ini; pasangan milik enrollment lain ditolak | PASS |
+| 24 | Delete enrollment memakai DELETE, record hilang, dan flash sukses | PASS |
+| 25 | EnrollmentSeeder menghasilkan 15 pasangan dan aman dijalankan ulang | PASS |
 
 Delapan skenario E2E dari instruksi telah dilakukan melalui test HTTP Laravel: buka form, participant kosong, course kosong, daftar Alya ke Laravel, tolak percobaan duplikat, daftar Alya ke PHP, daftar Bima ke Laravel, dan cek halaman laporan. Hasil tiap request tercantum di skenario enrollment di atas.
 
@@ -51,9 +56,9 @@ Laravel juga menjalankan 2 test contoh bawaan (unit dan feature); keduanya lulus
 ## Ringkasan run final
 
 - Perintah: `php artisan test`
-- Test: **50 passed, 0 failed**
-- Assertions: **207**
-- Durasi run final: **3.63 detik**
+- Test: **55 passed, 0 failed**
+- Assertions: **232**
+- Durasi run final: **3.66 detik**
 - Test database: SQLite in-memory
 
 Run awal menemukan satu kegagalan pada fixture test urutan pilihan (test mengharapkan Laravel Dasar tanpa membuat Course tersebut). Fixture diperbaiki. Hasil PASS di tabel ini adalah hasil run final setelah perbaikan.
@@ -62,14 +67,14 @@ Run awal menemukan satu kegagalan pada fixture test urutan pilihan (test menghar
 
 | Pemeriksaan | Hasil aktual |
 |---|---|
-| `php artisan route:list --except-vendor` | PASS — 16 route aplikasi termasuk katalog, peserta, Course dan Enrollment |
+| `php artisan route:list --except-vendor` | PASS — 20 route aplikasi termasuk katalog, peserta, Course dan Enrollment CRUD |
 | `php artisan route:list --path=enrollments` | PASS — index, create, store |
 | `php artisan migrate:status` setelah migration | PASS — semua migration berstatus Ran |
 | Migration lokal incremental | PASS — hanya dua tabel baru; tidak memakai `migrate:fresh` |
 | SQLite foreign key list | PASS — 2 foreign key aktif pada tabel enrollments |
 | SQLite index list | PASS — `enrollments_participant_id_course_id_unique` |
 | SQLite participant email index | PASS — `participants_email_unique` |
-| Data lokal sesudah audit navigasi | PASS — 15 courses, 3 participants, 1 enrollment existing; dipertahankan |
+| Data lokal setelah EnrollmentSeeder | PASS — 15 courses, 3 participants, 16 enrollments (15 seeded + 1 existing yang dipertahankan) |
 | HTTP `/enrollments` dan `/enrollments/create` | PASS — keduanya status 200 |
 | `php artisan optimize:clear` | PASS |
 | `npm.cmd run build` | PASS — Vite 7.3.7, 123 modules transformed |

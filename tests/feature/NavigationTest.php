@@ -3,6 +3,7 @@
 namespace Tests\Feature;
 
 use App\Models\Course;
+use App\Models\Enrollment;
 use App\Models\Participant;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
@@ -41,7 +42,7 @@ class NavigationTest extends TestCase
             ->assertSee('href="'.route('enrollments.create').'"', false)
             ->assertSee('Tambah Enrollment')
             ->assertSee('href="'.route('enrollments.index').'"', false)
-            ->assertSee('Laporan Enrollment');
+            ->assertSee('Kelola Enrollment');
     }
 
     public function test_home_featured_courses_are_real_open_database_courses(): void
@@ -108,8 +109,9 @@ class NavigationTest extends TestCase
 
     public function test_catalog_management_participants_and_enrollment_pages_all_render(): void
     {
-        $this->course();
-        Participant::create(['name' => 'Alya Rahma', 'email' => 'alya@example.test']);
+        $course = $this->course();
+        $participant = Participant::create(['name' => 'Alya Rahma', 'email' => 'alya@example.test']);
+        $enrollment = Enrollment::create(['participant_id' => $participant->id, 'course_id' => $course->id]);
 
         foreach ([
             route('home'),
@@ -121,6 +123,8 @@ class NavigationTest extends TestCase
             route('participants.index'),
             route('enrollments.create'),
             route('enrollments.index'),
+            route('enrollments.show', $enrollment),
+            route('enrollments.edit', $enrollment),
         ] as $url) {
             $this->get($url)->assertOk();
         }

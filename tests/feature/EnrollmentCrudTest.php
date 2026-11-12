@@ -5,6 +5,8 @@ namespace Tests\Feature;
 use App\Models\Course;
 use App\Models\Enrollment;
 use App\Models\Participant;
+use Database\Seeders\CourseSeeder;
+use Database\Seeders\EnrollmentSeeder;
 use Database\Seeders\ParticipantSeeder;
 use Illuminate\Database\QueryException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -48,6 +50,69 @@ class EnrollmentCrudTest extends TestCase
             ->assertSee('Laravel Dasar')
             ->assertSee('15 Jan 2027')
             ->assertSee('registered');
+    }
+
+    public function test_enrollment_detail_and_edit_pages_render_bound_record(): void
+    {
+        $participant = $this->participant();
+        $course = $this->course();
+        $enrollment = Enrollment::create(['participant_id' => $participant->id, 'course_id' => $course->id]);
+
+        $this->get(route('enrollments.show', $enrollment))
+            ->assertOk()->assertSee('Enrollment #'.$enrollment->id)->assertSee('Alya Rahma')->assertSee('Laravel Dasar');
+        $this->get(route('enrollments.edit', $enrollment))
+            ->assertOk()->assertSee('name="_method" value="PUT"', false)->assertSee('selected', false);
+    }
+
+    public function test_enrollment_can_be_updated_and_flashes_success(): void
+    {
+        $participant = $this->participant();
+        $course = $this->course();
+        $nextCourse = $this->course(['code' => 'KRS-002', 'name' => 'PHP Dasar']);
+        $enrollment = Enrollment::create(['participant_id' => $participant->id, 'course_id' => $course->id]);
+
+        $this->put(route('enrollments.update', $enrollment), [
+            'participant_id' => $participant->id,
+            'course_id' => $nextCourse->id,
+            'status' => 'completed',
+        ])->assertRedirect(route('enrollments.show', $enrollment))
+            ->assertSessionHas('success', 'Enrollment berhasil diperbarui.');
+
+        $this->assertDatabaseHas('enrollments', [
+            'id' => $enrollment->id,
+            'course_id' => $nextCourse->id,
+            'status' => 'completed',
+        ]);
+    }
+
+    public function test_enrollment_update_ignores_current_pair_but_rejects_another_duplicate(): void
+    {
+        $participant = $this->participant();
+        $course = $this->course();
+        $otherCourse = $this->course(['code' => 'KRS-002', 'name' => 'PHP Dasar']);
+        $enrollment = Enrollment::create(['participant_id' => $participant->id, 'course_id' => $course->id]);
+        Enrollment::create(['participant_id' => $participant->id, 'course_id' => $otherCourse->id]);
+
+        $this->put(route('enrollments.update', $enrollment), [
+            'participant_id' => $participant->id, 'course_id' => $course->id, 'status' => 'registered',
+        ])->assertRedirect(route('enrollments.show', $enrollment));
+
+        $this->from(route('enrollments.edit', $enrollment))
+            ->put(route('enrollments.update', $enrollment), [
+                'participant_id' => $participant->id, 'course_id' => $otherCourse->id, 'status' => 'registered',
+            ])->assertRedirect(route('enrollments.edit', $enrollment))->assertSessionHasErrors('course_id');
+    }
+
+    public function test_enrollment_can_be_deleted_with_delete_method_and_success_flash(): void
+    {
+        $participant = $this->participant();
+        $course = $this->course();
+        $enrollment = Enrollment::create(['participant_id' => $participant->id, 'course_id' => $course->id]);
+
+        $this->delete(route('enrollments.destroy', $enrollment))
+            ->assertRedirect(route('enrollments.index'))
+            ->assertSessionHas('success', 'Enrollment berhasil dihapus.');
+        $this->assertDatabaseMissing('enrollments', ['id' => $enrollment->id]);
     }
 
     public function test_enrollment_report_has_empty_state_and_create_link(): void
@@ -279,6 +344,15 @@ class EnrollmentCrudTest extends TestCase
         $this->assertDatabaseHas('participants', ['email' => 'alya@example.test']);
         $this->assertDatabaseHas('participants', ['email' => 'bima@example.test']);
         $this->assertDatabaseHas('participants', ['email' => 'citra@example.test']);
+    }
+
+    public function test_enrollment_seeder_creates_fifteen_idempotent_seed_records(): void
+    {
+        $this->seed([CourseSeeder::class, ParticipantSeeder::class, EnrollmentSeeder::class]);
+        $this->assertDatabaseCount('enrollments', 15);
+
+        $this->seed(EnrollmentSeeder::class);
+        $this->assertDatabaseCount('enrollments', 15);
     }
 
     public function test_legacy_registration_form_route_remains_available(): void
