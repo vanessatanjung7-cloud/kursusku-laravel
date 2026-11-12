@@ -1,0 +1,18 @@
+HASIL PEMERIKSAAN SKEMA SQLITE (12 November 2026)
+Sumber: database/database.sqlite, dibaca melalui Laravel DB facade dan SQLite PRAGMA.
+
+Database: SQLite
+PRAGMA foreign_keys: 1
+Counts: courses=15, participants=3, enrollments=0
+
+Foreign keys pada enrollments:
+  course_id -> courses.id; on_delete=CASCADE
+  participant_id -> participants.id; on_delete=CASCADE
+
+Index enrollments:
+  enrollments_participant_id_course_id_unique; unique=1; columns=participant_id,course_id
+
+Index participants:
+  participants_email_unique; unique=1; columns=email
+
+Pengujian penghapusan dengan enrollment terkait dijalankan terpisah pada SQLite in-memory dan lulus untuk kedua entitas induk. Database lokal tidak diisi atau dihapus untuk uji cascade.

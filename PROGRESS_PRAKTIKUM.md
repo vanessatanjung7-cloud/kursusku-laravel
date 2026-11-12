@@ -1,6 +1,6 @@
 ﻿# Progress Praktikum Pertemuan 11
 
-Pembaruan terakhir: 11 November 2026
+Pembaruan checklist Pertemuan 11: 11 November 2026. Lampiran Pertemuan 12: 12 November 2026.
 
 **Legenda:** `[x]` selesai dan diverifikasi, `[ ]` belum selesai, `[!]` perlu pemeriksaan/tindakan manual.
 
@@ -37,7 +37,36 @@ Pembaruan terakhir: 11 November 2026
 | [x] | Alur CRUD browser untuk bukti | Aplikasi lokal, Edge headless | Course dummy dibuat lewat form aplikasi, halaman detail/edit dibuka, data diupdate dan pesan sukses tampil, lalu dummy dihapus lewat form DELETE dan pesan sukses tampil. Hitungan katalog kembali 15. |
 | [x] | Screenshot bukti pengumpulan | `evidence/meeting-11/index-course.png`, `detail-course.png`, `edit-course.png`, `update-success.png`, `delete-success.png` | Kelima file PNG diperiksa setelah ditangkap dari halaman aplikasi nyata di browser Edge. |
 
-## Catatan tindakan manual
+## Catatan tindakan manual Pertemuan 11
 
 - Tidak ada pekerjaan implementasi atau verifikasi yang tertunda. Lima screenshot alur CRUD dan dua screenshot responsif tersedia di `evidence/meeting-11/`.
+
+## Praktikum Pertemuan 12 — Relational Database
+
+Pembaruan: 12 November 2026.
+
+| Status | Persyaratan | Verifikasi / catatan |
+|---|---|---|
+| [x] | Audit project dan versi Laravel | Laravel 12.70.1, PHP 8.2.12; status Git bersih sebelum perubahan; koneksi aplikasi SQLite; `.env` diperiksa tanpa menampilkan rahasia. |
+| [x] | Migration participants | Kolom `name` 100, `email` 120 unique, `phone` nullable 20, id, timestamps. Migration incremental sudah `Ran`. |
+| [x] | Migration enrollments | Foreign key ke participants dan courses dengan `constrained()->cascadeOnDelete()`, status default `registered`, unique gabungan participant/course. Migration incremental sudah `Ran`. |
+| [x] | Urutan migration dan perlindungan data Course | Migration baru bertanggal setelah migration Course. Tidak menjalankan `migrate:fresh`; tabel Course dan 15 data Course tetap ada. |
+| [x] | Relasi Eloquent | Relasi `hasMany`, `belongsTo`, dan many-to-many dengan pivot status/timestamps diperiksa dan diuji. |
+| [x] | Data peserta contoh | Alya, Bima, dan Citra tersedia melalui `ParticipantSeeder` yang idempotent; hitungan SQLite lokal 3 peserta. |
+| [x] | EnrollmentController | Controller PSR-4 bernama benar; index eager-load participant/course, create mengurutkan opsi, store memakai validasi dan flash success. |
+| [x] | Route enrollment | Route resource hanya index/create/store; `route:list` menunjukkan `/enrollments`, `/enrollments/create`, POST `/enrollments`. Route Course tetap tersedia. |
+| [x] | Form enrollment | CSRF, dropdown peserta/kursus, old input, validasi dekat field. Kursus berstatus `open` dipakai sebagai status aktif pada model Course project (status yang diizinkan existing adalah draft/open/closed). |
+| [x] | Laporan enrollment | Tabel relasional memuat peserta, kursus, start date, status, tombol tambah, flash message dari layout, dan empty state. |
+| [x] | Validasi dan pencegahan duplikasi | Rule unique bersyarat per participant, course harus open; composite unique diuji langsung pada SQLite. |
+| [x] | Cascade delete | Dua test khusus membuktikan penghapusan Course/Participant menghapus Enrollment terkait dan menjaga entitas satunya. Dilakukan di SQLite in-memory. |
+| [x] | Data lokal aman | Setelah migration/seeder: 15 Course, 3 Participant, 0 Enrollment; tidak ada Course dihapus. |
+| [x] | Automated test | `php artisan test`: 44 passed, 0 failed, 162 assertions; termasuk test Course Pertemuan 11. Database test menggunakan SQLite in-memory. |
+| [x] | Route dan migration check | `php artisan route:list`, `php artisan route:list --path=enrollments`, dan `php artisan migrate:status` berhasil; seluruh migration berstatus Ran. |
+| [x] | Cache dan asset UI | `php artisan optimize:clear` berhasil; `npm.cmd run build` berhasil setelah esbuild ditolak oleh sandbox pada percobaan pertama. |
+| [x] | Pemeriksaan halaman aplikasi | `/enrollments` dan `/enrollments/create` memberi HTTP 200; dua screenshot Edge nyata tersedia di `evidence/meeting-12/`. |
+| [x] | Test matrix dan log | Hasil aktual dirangkum di `evidence/meeting-12/test-matrix.md` dan `evidence/meeting-12/ai-log.txt`. |
+| [x] | ERD dan bukti skema | `evidence/meeting-12/erd.md` berisi ERD final; `schema-check.txt` menyimpan output aktual foreign key, cascade, unique index, dan jumlah data SQLite. |
+| [x] | Ringkasan materi | Catatan relasi dan integritas database tersedia di `evidence/meeting-12/ringkasan-materi.md`. |
+| [!] | Ekstraksi teks langsung dari PDF | File PDF terlampir ditemukan, tetapi lingkungan ini tidak memiliki PDF text extractor. Pengerjaan dicocokkan dengan instruksi Pertemuan 12 lengkap yang ditempelkan pengguna; pemeriksaan literal isi PDF sebaiknya dicocokkan manual bila PDF memiliki ketentuan tambahan. |
+| [!] | Screenshot alur sukses/duplikasi untuk laporan | Screenshot index dan form sudah dibuat. Jika dosen meminta bukti visual, ambil juga screenshot setelah sukses menyimpan enrollment dan setelah pesan validasi duplikasi tampil di browser. Pengujian alur tersebut sudah lulus secara otomatis. |
 

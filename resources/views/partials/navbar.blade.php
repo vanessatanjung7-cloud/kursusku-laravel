@@ -22,8 +22,13 @@
                     <a class="nav-link" href="{{ route('courses.index') }}">Kursus</a>
                 </li>
                 <li class="nav-item">
+                    <a class="nav-link" href="{{ route('enrollments.index') }}">
+                        Enrollment
+                    </a>
+                </li>
+                <li class="nav-item">
                     <a class="nav-link" href="{{ route('enrollments.create') }}">
-                        Pendaftaran
+                        Tambah Enrollment
                     </a>
                 </li>
             </ul>

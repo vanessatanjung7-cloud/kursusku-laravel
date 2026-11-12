@@ -1,0 +1,40 @@
+AI LOG — Praktikum Pertemuan 12
+Tanggal: 12 November 2026 (Asia/Jakarta)
+Project: KursusKu, Laravel 12.70.1, PHP 8.2.12
+
+SUMBER DAN BATASAN
+- Membaca instruksi tugas Pertemuan 12 dari file teks yang ditempelkan pengguna.
+- PDF `Panduan_Praktikum_Pertemuan_12.pdf` ditemukan di Downloads. Lingkungan tidak menyediakan pdftotext/PDF parser; pemeriksaan isi PDF secara literal tidak dapat dilakukan. Implementasi dicocokkan dengan instruksi lengkap yang ditempel pengguna.
+- Memeriksa composer.json, konfigurasi database tanpa mencetak rahasia .env, migration, model, controller, routes, views, test suite, dan status git.
+- Repository sudah berada pada branch main dan bersih sebelum implementasi.
+
+PERUBAHAN
+- Menambah migration participants dan enrollments berurutan setelah migration courses; tidak mengubah migration courses.
+- Migration enrollment memakai constrained foreign key dengan cascadeOnDelete dan composite unique (participant_id, course_id).
+- Menggunakan kembali relasi Eloquent yang sebelumnya sudah ada pada model Course, Participant, dan Enrollment setelah memeriksa implementasinya.
+- Memperbaiki nama file controller agar sesuai PSR-4 dan menambahkan index/create/store dengan eager loading, validasi peserta/kursus open, anti-duplikasi, status registered, redirect, dan flash success.
+- Menambahkan ParticipantSeeder idempotent dan memanggilnya dari DatabaseSeeder bersama CourseSeeder.
+- Membuat laporan Enrollment dan form basis database dengan layout/navigasi yang sama.
+- Memisahkan route/form pendaftaran lama agar tetap tersedia di `/pendaftaran`; menghubungkan availability lama ke hitungan enrollment database.
+- Menambah feature test khusus enrollment dan menambah bukti aktual di test matrix.
+- Menjadikan pilihan course pada form pendaftaran lama dinamis dari Course berstatus `open`, agar selaras dengan endpoint availability berbasis database.
+
+VERIFIKASI AKTUAL
+- Run final `php artisan test`: 44 passed, 0 failed, 162 assertions; SQLite in-memory.
+- `php artisan route:list`: 17 routes; resource enrollment memiliki index/create/store.
+- Migration incremental lokal selesai. `migrate:status`: semua migration Ran.
+- SQLite setelah migrasi/seeder: 15 Course, 3 Participant, 0 Enrollment; dua foreign key dan composite unique terdeteksi. Tidak ada Course dihapus.
+- `/enrollments` dan `/enrollments/create` memberi HTTP 200.
+- `php artisan optimize:clear` berhasil.
+- Build Vite pertama gagal di sandbox dengan `spawn EPERM`; diulang dengan izin proses dan sukses (Vite 7.3.7, 123 modules).
+- Screenshot index/form ditangkap dari aplikasi lokal memakai Edge headless; file disimpan di evidence/meeting-12/.
+- Test run pertama menemukan fixture test yang salah; fixture diperbaiki dan seluruh suite dijalankan ulang hingga PASS.
+
+KEAMANAN DATA
+- Tidak menjalankan migrate:fresh atau db:wipe.
+- Hanya menjalankan migration additive untuk tabel baru dan seeder idempotent untuk tiga Participant contoh.
+- Test CRUD/cascade dijalankan terhadap SQLite in-memory, bukan database lokal.
+- Database lokal tetap berisi 15 Course; tabel Enrollment lokal kosong sesudah verifikasi.
+
+PEKERJAAN VISUAL YANG DAPAT DILENGKAPI MANUAL
+- Jika laporan dosen meminta bukti interaksi, ambil screenshot setelah menyimpan enrollment dan screenshot pesan saat percobaan pendaftaran duplikat. Kedua kondisi telah diuji automated.
