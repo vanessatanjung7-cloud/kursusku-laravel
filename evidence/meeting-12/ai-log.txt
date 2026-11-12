@@ -1,40 +1,38 @@
-AI LOG — Praktikum Pertemuan 12
+AI LOG — Praktikum Pertemuan 12 dan audit navigasi
 Tanggal: 12 November 2026 (Asia/Jakarta)
 Project: KursusKu, Laravel 12.70.1, PHP 8.2.12
 
 SUMBER DAN BATASAN
-- Membaca instruksi tugas Pertemuan 12 dari file teks yang ditempelkan pengguna.
-- PDF `Panduan_Praktikum_Pertemuan_12.pdf` ditemukan di Downloads. Lingkungan tidak menyediakan pdftotext/PDF parser; pemeriksaan isi PDF secara literal tidak dapat dilakukan. Implementasi dicocokkan dengan instruksi lengkap yang ditempel pengguna.
-- Memeriksa composer.json, konfigurasi database tanpa mencetak rahasia .env, migration, model, controller, routes, views, test suite, dan status git.
-- Repository sudah berada pada branch main dan bersih sebelum implementasi.
+- Membaca instruksi tugas Pertemuan 12 dan prompt audit navigasi yang ditempelkan pengguna.
+- PDF sumber ada di Downloads, tetapi lingkungan tidak menyediakan PDF text extractor. Pencocokan literal terhadap PDF tidak dapat diverifikasi; implementasi dicocokkan dengan instruksi teks lengkap pengguna.
+- Memeriksa source aktual, routes, migrations, controllers, requests, models, Blade, tests, dokumentasi, dan database SQLite tanpa mengeluarkan rahasia .env.
 
-PERUBAHAN
-- Menambah migration participants dan enrollments berurutan setelah migration courses; tidak mengubah migration courses.
-- Migration enrollment memakai constrained foreign key dengan cascadeOnDelete dan composite unique (participant_id, course_id).
-- Menggunakan kembali relasi Eloquent yang sebelumnya sudah ada pada model Course, Participant, dan Enrollment setelah memeriksa implementasinya.
-- Memperbaiki nama file controller agar sesuai PSR-4 dan menambahkan index/create/store dengan eager loading, validasi peserta/kursus open, anti-duplikasi, status registered, redirect, dan flash success.
-- Menambahkan ParticipantSeeder idempotent dan memanggilnya dari DatabaseSeeder bersama CourseSeeder.
-- Membuat laporan Enrollment dan form basis database dengan layout/navigasi yang sama.
-- Memisahkan route/form pendaftaran lama agar tetap tersedia di `/pendaftaran`; menghubungkan availability lama ke hitungan enrollment database.
-- Menambah feature test khusus enrollment dan menambah bukti aktual di test matrix.
-- Menjadikan pilihan course pada form pendaftaran lama dinamis dari Course berstatus `open`, agar selaras dengan endpoint availability berbasis database.
+PEKERJAAN MEETING 12
+- Menambahkan tabel participants dan enrollments melalui migration incremental; menjaga migration Course dan 15 record Course.
+- Menyediakan relasi Eloquent, seeder peserta idempotent, form enrollment, laporan relasional, validasi status/duplikasi, dan foreign key cascade.
+- Menguji CRUD Course, enrollment, unique constraints, relasi, cascade, dan route melalui feature tests berbasis SQLite in-memory.
 
-VERIFIKASI AKTUAL
-- Run final `php artisan test`: 44 passed, 0 failed, 162 assertions; SQLite in-memory.
-- `php artisan route:list`: 17 routes; resource enrollment memiliki index/create/store.
-- Migration incremental lokal selesai. `migrate:status`: semua migration Ran.
-- SQLite setelah migrasi/seeder: 15 Course, 3 Participant, 0 Enrollment; dua foreign key dan composite unique terdeteksi. Tidak ada Course dihapus.
-- `/enrollments` dan `/enrollments/create` memberi HTTP 200.
-- `php artisan optimize:clear` berhasil.
-- Build Vite pertama gagal di sandbox dengan `spawn EPERM`; diulang dengan izin proses dan sukses (Vite 7.3.7, 123 modules).
-- Screenshot index/form ditangkap dari aplikasi lokal memakai Edge headless; file disimpan di evidence/meeting-12/.
-- Test run pertama menemukan fixture test yang salah; fixture diperbaiki dan seluruh suite dijalankan ulang hingga PASS.
+PERBAIKAN NAVIGASI DAN INTEGRASI
+- Mengganti beranda statis menjadi halaman dinamis dari Course di database; CTA katalog menuju katalog yang benar.
+- Menambahkan `/courses/catalog` untuk course berstatus open dan `/participants` untuk daftar peserta.
+- Menyelaraskan navbar desktop/mobile serta link ke Kelola Course, Tambah Course, enrollment, katalog, dan peserta.
+- Menambahkan CTA detail Course ke enrollment, dengan course dan participant terpilih di form enrollment.
+- Memperbaiki partial hasil pencarian Course agar menjadi fragment HTML yang semestinya.
+- Menambahkan 6 feature tests integrasi navigasi dan memastikan halaman terkait merespons.
+
+HASIL VERIFIKASI AKTUAL
+- `php artisan test`: 50 passed, 0 failed, 207 assertions; database test SQLite in-memory.
+- `php artisan route:list --except-vendor`: 16 application routes; seluruh migration berstatus Ran.
+- `npm.cmd run build` dan `php artisan optimize:clear` berhasil.
+- Browser Edge headless memeriksa home, katalog, index/detail/edit Course, peserta, enrollment; klik mobile menu/katalog/detail/CTA enrollment berhasil. Viewport 390px tidak overflow horizontal.
+- Screenshot nyata disimpan di `evidence/meeting-12/`: home.png, catalog-course.png, index-course.png, detail-course.png, edit-course.png, participants.png, enrollment-index.png, enrollment-create.png, home-mobile.png, home-mobile-menu.png.
 
 KEAMANAN DATA
-- Tidak menjalankan migrate:fresh atau db:wipe.
-- Hanya menjalankan migration additive untuk tabel baru dan seeder idempotent untuk tiga Participant contoh.
-- Test CRUD/cascade dijalankan terhadap SQLite in-memory, bukan database lokal.
-- Database lokal tetap berisi 15 Course; tabel Enrollment lokal kosong sesudah verifikasi.
+- Tidak menjalankan `migrate:fresh` atau `db:wipe`.
+- Automated test berjalan pada SQLite in-memory.
+- Data lokal tetap berisi 15 Course, 3 Participant, dan 1 Enrollment yang sudah ada; enrollment existing tidak dibuat atau dihapus selama audit navigasi.
+- Test cascade dilakukan hanya di database in-memory.
 
-PEKERJAAN VISUAL YANG DAPAT DILENGKAPI MANUAL
-- Jika laporan dosen meminta bukti interaksi, ambil screenshot setelah menyimpan enrollment dan screenshot pesan saat percobaan pendaftaran duplikat. Kedua kondisi telah diuji automated.
+PEKERJAAN MANUAL
+- Bila dosen meminta bukti visual interaksi transaksi, screenshot pesan sukses/duplikasi enrollment belum direkam pada sesi browser; skenarionya lulus automated feature test.
+- Pencocokan isi PDF secara literal memerlukan pembacaan PDF secara manual karena parser PDF tidak tersedia.

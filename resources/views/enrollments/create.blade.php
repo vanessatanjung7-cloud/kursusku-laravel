@@ -32,7 +32,7 @@
                                 class="form-select @error('participant_id') is-invalid @enderror" required>
                             <option value="">-- pilih peserta --</option>
                             @foreach ($participants as $participant)
-                                <option value="{{ $participant->id }}" @selected(old('participant_id') == $participant->id)>
+                                <option value="{{ $participant->id }}" @selected(old('participant_id', $selectedParticipantId) == $participant->id)>
                                     {{ $participant->name }} ({{ $participant->email }})
                                 </option>
                             @endforeach
@@ -46,7 +46,7 @@
                                 class="form-select @error('course_id') is-invalid @enderror" required>
                             <option value="">-- pilih kursus --</option>
                             @foreach ($courses as $course)
-                                <option value="{{ $course->id }}" @selected(old('course_id') == $course->id)>
+                                <option value="{{ $course->id }}" @selected(old('course_id', $selectedCourseId) == $course->id)>
                                     {{ $course->name }} — mulai {{ $course->start_date->format('d M Y') }}
                                 </option>
                             @endforeach

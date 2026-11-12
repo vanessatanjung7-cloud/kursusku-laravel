@@ -19,7 +19,10 @@ Project praktikum Pemrograman Web III. Aplikasi memakai Laravel 12, PHP 8.2+, da
 
 ## Route penting
 
-- `/courses` — daftar dan CRUD Course.
+- `/courses/catalog` — katalog kursus yang sedang dibuka.
+- `/courses` — kelola/CRUD Course.
+- `/courses/create` — tambah Course.
+- `/participants` — daftar peserta.
 - `/enrollments` — laporan enrollment.
 - `/enrollments/create` — form enrollment.
 - `/pendaftaran` — form preview pendaftaran lama.

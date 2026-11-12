@@ -59,14 +59,15 @@ Pembaruan: 12 November 2026.
 | [x] | Laporan enrollment | Tabel relasional memuat peserta, kursus, start date, status, tombol tambah, flash message dari layout, dan empty state. |
 | [x] | Validasi dan pencegahan duplikasi | Rule unique bersyarat per participant, course harus open; composite unique diuji langsung pada SQLite. |
 | [x] | Cascade delete | Dua test khusus membuktikan penghapusan Course/Participant menghapus Enrollment terkait dan menjaga entitas satunya. Dilakukan di SQLite in-memory. |
-| [x] | Data lokal aman | Setelah migration/seeder: 15 Course, 3 Participant, 0 Enrollment; tidak ada Course dihapus. |
-| [x] | Automated test | `php artisan test`: 44 passed, 0 failed, 162 assertions; termasuk test Course Pertemuan 11. Database test menggunakan SQLite in-memory. |
-| [x] | Route dan migration check | `php artisan route:list`, `php artisan route:list --path=enrollments`, dan `php artisan migrate:status` berhasil; seluruh migration berstatus Ran. |
-| [x] | Cache dan asset UI | `php artisan optimize:clear` berhasil; `npm.cmd run build` berhasil setelah esbuild ditolak oleh sandbox pada percobaan pertama. |
-| [x] | Pemeriksaan halaman aplikasi | `/enrollments` dan `/enrollments/create` memberi HTTP 200; dua screenshot Edge nyata tersedia di `evidence/meeting-12/`. |
+| [x] | Data lokal aman | Audit akhir: 15 Course, 3 Participant, dan 1 enrollment yang sudah ada; data Course dan enrollment existing dipertahankan. |
+| [x] | Automated test | `php artisan test`: 50 passed, 0 failed, 207 assertions; mencakup CRUD Course, enrollment, dan navigasi. SQLite in-memory. |
+| [x] | Route dan migration check | `php artisan route:list --except-vendor` menampilkan 16 route aplikasi, termasuk katalog, peserta, Course, dan enrollment; semua migration berstatus Ran. |
+| [x] | Cache dan asset UI | `php artisan optimize:clear` dan `npm.cmd run build` berhasil. |
+| [x] | Pemeriksaan halaman aplikasi | Beranda, katalog, detail/edit Course, peserta, form/laporan enrollment diperiksa di Edge. Klik mobile menu, Daftar Kursus, Detail, dan Daftarkan Peserta lulus; viewport 390px tidak horizontal overflow. |
+| [x] | Screenshot aplikasi | Screenshot desktop halaman utama, katalog, kelola/detail/edit Course, peserta, enrollment; screenshot mobile dan menu mobile ada di `evidence/meeting-12/`. |
 | [x] | Test matrix dan log | Hasil aktual dirangkum di `evidence/meeting-12/test-matrix.md` dan `evidence/meeting-12/ai-log.txt`. |
 | [x] | ERD dan bukti skema | `evidence/meeting-12/erd.md` berisi ERD final; `schema-check.txt` menyimpan output aktual foreign key, cascade, unique index, dan jumlah data SQLite. |
 | [x] | Ringkasan materi | Catatan relasi dan integritas database tersedia di `evidence/meeting-12/ringkasan-materi.md`. |
 | [!] | Ekstraksi teks langsung dari PDF | File PDF terlampir ditemukan, tetapi lingkungan ini tidak memiliki PDF text extractor. Pengerjaan dicocokkan dengan instruksi Pertemuan 12 lengkap yang ditempelkan pengguna; pemeriksaan literal isi PDF sebaiknya dicocokkan manual bila PDF memiliki ketentuan tambahan. |
-| [!] | Screenshot alur sukses/duplikasi untuk laporan | Screenshot index dan form sudah dibuat. Jika dosen meminta bukti visual, ambil juga screenshot setelah sukses menyimpan enrollment dan setelah pesan validasi duplikasi tampil di browser. Pengujian alur tersebut sudah lulus secara otomatis. |
+| [!] | Screenshot alur sukses/duplikasi untuk laporan | Screenshot halaman tersedia. Jika dosen meminta bukti visual transaksi, ambil screenshot setelah pesan sukses dan setelah validasi duplikasi; alur tersebut sudah lulus automated test. |
 

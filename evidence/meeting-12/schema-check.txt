@@ -3,7 +3,7 @@ Sumber: database/database.sqlite, dibaca melalui Laravel DB facade dan SQLite PR
 
 Database: SQLite
 PRAGMA foreign_keys: 1
-Counts: courses=15, participants=3, enrollments=0
+Counts at final navigation audit: courses=15, participants=3, enrollments=1
 
 Foreign keys pada enrollments:
   course_id -> courses.id; on_delete=CASCADE
@@ -16,3 +16,4 @@ Index participants:
   participants_email_unique; unique=1; columns=email
 
 Pengujian penghapusan dengan enrollment terkait dijalankan terpisah pada SQLite in-memory dan lulus untuk kedua entitas induk. Database lokal tidak diisi atau dihapus untuk uji cascade.
+Satu enrollment lokal yang sudah ada tetap dipertahankan selama audit navigasi.

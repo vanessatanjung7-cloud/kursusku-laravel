@@ -35,12 +35,25 @@ Suite `tests/feature/CourseCrudTest.php` menjalankan 22 skenario CRUD, validasi,
 
 Laravel juga menjalankan 2 test contoh bawaan (unit dan feature); keduanya lulus.
 
+## Navigation integration tests
+
+`tests/feature/NavigationTest.php` contributes 6 feature tests:
+
+| No. | Skenario | Hasil aktual |
+|---:|---|---|
+| 1 | Navigation menu mengarah ke katalog, CRUD Course, peserta, dan laporan | PASS |
+| 2 | Beranda merender Course dari database dan link CTA katalog | PASS |
+| 3 | Katalog menampilkan Course open, detail, dan link enrollment | PASS |
+| 4 | Hasil pencarian AJAX merender fragment, bukan layout penuh | PASS |
+| 5 | Link peserta dan Course mengisi pilihan form enrollment | PASS |
+| 6 | Halaman utama integrasi merespons sukses | PASS |
+
 ## Ringkasan run final
 
 - Perintah: `php artisan test`
-- Test: **44 passed, 0 failed**
-- Assertions: **162**
-- Durasi run final: **2.95 detik**
+- Test: **50 passed, 0 failed**
+- Assertions: **207**
+- Durasi run final: **3.63 detik**
 - Test database: SQLite in-memory
 
 Run awal menemukan satu kegagalan pada fixture test urutan pilihan (test mengharapkan Laravel Dasar tanpa membuat Course tersebut). Fixture diperbaiki. Hasil PASS di tabel ini adalah hasil run final setelah perbaikan.
@@ -49,17 +62,18 @@ Run awal menemukan satu kegagalan pada fixture test urutan pilihan (test menghar
 
 | Pemeriksaan | Hasil aktual |
 |---|---|
-| `php artisan route:list` | PASS — 17 route termasuk route Course dan Enrollment |
+| `php artisan route:list --except-vendor` | PASS — 16 route aplikasi termasuk katalog, peserta, Course dan Enrollment |
 | `php artisan route:list --path=enrollments` | PASS — index, create, store |
 | `php artisan migrate:status` setelah migration | PASS — semua migration berstatus Ran |
 | Migration lokal incremental | PASS — hanya dua tabel baru; tidak memakai `migrate:fresh` |
 | SQLite foreign key list | PASS — 2 foreign key aktif pada tabel enrollments |
 | SQLite index list | PASS — `enrollments_participant_id_course_id_unique` |
 | SQLite participant email index | PASS — `participants_email_unique` |
-| Data lokal sesudah seed | PASS — 15 courses, 3 participants, 0 enrollments |
+| Data lokal sesudah audit navigasi | PASS — 15 courses, 3 participants, 1 enrollment existing; dipertahankan |
 | HTTP `/enrollments` dan `/enrollments/create` | PASS — keduanya status 200 |
 | `php artisan optimize:clear` | PASS |
 | `npm.cmd run build` | PASS — Vite 7.3.7, 123 modules transformed |
-| Screenshot halaman laporan dan form | PASS — PNG nyata dari Edge headless di `evidence/meeting-12/` |
+| Screenshot halaman aplikasi | PASS — PNG nyata dari Edge headless; home, katalog, Course index/detail/edit, peserta, enrollment, dan mobile |
+| Klik alur browser mobile | PASS — menu, katalog, detail Course, dan CTA enrollment; viewport 390px tanpa overflow horizontal |
 
 PDF sumber ada di Downloads tetapi tidak berhasil diekstrak sebagai teks karena PDF text extractor tidak tersedia. Matrix ini dicocokkan terhadap instruksi Pertemuan 12 lengkap yang disertakan pengguna. Lihat catatan di `PROGRESS_PRAKTIKUM.md`.

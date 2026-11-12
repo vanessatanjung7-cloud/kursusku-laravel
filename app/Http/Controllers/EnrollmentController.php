@@ -21,13 +21,15 @@ class EnrollmentController extends Controller
         return view('enrollments.index', compact('enrollments'));
     }
 
-    public function create(): View
+    public function create(Request $request): View
     {
         $participants = Participant::query()->orderBy('name')->get();
         // Pertemuan 11 uses `open` for courses that are available for enrollment.
         $courses = Course::query()->where('status', 'open')->orderBy('name')->get();
+        $selectedParticipantId = $request->integer('participant_id');
+        $selectedCourseId = $request->integer('course_id');
 
-        return view('enrollments.create', compact('participants', 'courses'));
+        return view('enrollments.create', compact('participants', 'courses', 'selectedParticipantId', 'selectedCourseId'));
     }
 
     public function store(Request $request): RedirectResponse

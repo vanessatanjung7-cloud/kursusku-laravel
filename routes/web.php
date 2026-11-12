@@ -1,14 +1,14 @@
 <?php
 
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\EnrollmentController;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\ParticipantController;
 use App\Models\Course;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('home');
-})->name('home');
+Route::get('/', [HomeController::class, 'index'])->name('home');
 
 Route::get('/pendaftaran', function () {
     $courses = Course::query()
@@ -28,13 +28,16 @@ Route::post('/pendaftaran/preview', function (Request $request) {
     ]);
 
     return back()
-        ->with('success', 'Form lolos validasi. Database akan ditambahkan pada pertemuan berikutnya.')
+        ->with('success', 'Preview pendaftaran lolos validasi. Gunakan form enrollment untuk menyimpan pendaftaran.')
         ->withInput();
 })->name('enrollments.preview');
 
+Route::get('/courses/catalog', [CourseController::class, 'catalog'])
+    ->name('courses.catalog');
 Route::get('/courses/{course}/availability', [CourseController::class, 'availability'])
     ->name('courses.availability');
 
 Route::resource('courses', CourseController::class);
+Route::resource('participants', ParticipantController::class)->only(['index']);
 Route::resource('enrollments', EnrollmentController::class)
     ->only(['index', 'create', 'store']);

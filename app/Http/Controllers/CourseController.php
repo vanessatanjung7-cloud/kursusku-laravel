@@ -12,6 +12,17 @@ use Illuminate\View\View;
 
 class CourseController extends Controller
 {
+    public function catalog(): View
+    {
+        $courses = Course::query()
+            ->where('status', 'open')
+            ->orderBy('start_date')
+            ->orderBy('name')
+            ->get();
+
+        return view('courses.catalog', compact('courses'));
+    }
+
     public function index(Request $request): View
     {
         $search = trim((string) $request->query('q'));
