@@ -15,7 +15,7 @@ Project praktikum Pemrograman Web III. Aplikasi memakai Laravel 12, PHP 8.2+, da
 
 - CRUD Course dengan validasi Form Request, route model binding, flash message, dan form delete ber-CSRF.
 - Relasi Course–Enrollment–Participant, CRUD Enrollment lengkap, pencegahan data ganda, laporan relasional, dan cascade delete.
-- Database seeder menambahkan 15 pasangan contoh Enrollment secara idempotent bersama Course dan Participant.
+- Database seeder menambahkan 15 peserta contoh tambahan (18 total termasuk 3 awal) dan 15 pasangan contoh Enrollment secara idempotent bersama Course.
 - Pendaftaran lama `/pendaftaran` tetap tersedia sebagai preview; alur enrollment berbasis database ada di `/enrollments/create`.
 
 ## Route penting

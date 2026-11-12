@@ -340,10 +340,11 @@ class EnrollmentCrudTest extends TestCase
         $this->seed(ParticipantSeeder::class);
         $this->seed(ParticipantSeeder::class);
 
-        $this->assertDatabaseCount('participants', 3);
+        $this->assertDatabaseCount('participants', 18);
         $this->assertDatabaseHas('participants', ['email' => 'alya@example.test']);
         $this->assertDatabaseHas('participants', ['email' => 'bima@example.test']);
         $this->assertDatabaseHas('participants', ['email' => 'citra@example.test']);
+        $this->assertDatabaseHas('participants', ['email' => 'peserta18@example.test']);
     }
 
     public function test_enrollment_seeder_creates_fifteen_idempotent_seed_records(): void

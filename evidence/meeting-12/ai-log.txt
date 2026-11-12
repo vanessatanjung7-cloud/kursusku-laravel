@@ -42,4 +42,6 @@ PENAMBAHAN SESUDAH AUDIT NAVIGASI
 - Menambahkan menu Kelola Enrollment dan actions detail/edit/delete di daftar.
 - Menambahkan `EnrollmentSeeder` berisi 15 pasangan unik berbasis tiga peserta contoh dan lima course open; seeder memakai `firstOrCreate` dan ditambahkan ke `DatabaseSeeder`.
 - Menjalankan seeder pada database lokal tanpa migration destruktif. Hitungan aktual: 15 Course, 3 Participant, 16 Enrollment (15 contoh baru + 1 record lama yang dipertahankan).
-- Run final `php artisan test`: 55 passed, 0 failed, 232 assertions; termasuk tests detail/edit/update/delete dan seeder idempotent. SQLite in-memory.
+- Run final `php artisan test` sebelum penambahan peserta: 55 passed, 0 failed, 232 assertions. SQLite in-memory.
+- Menambahkan 15 Participant contoh tambahan ber-email unik ke `ParticipantSeeder`; test idempotensi memverifikasi total 18 peserta termasuk tiga seed awal.
+- Menjalankan ulang `php artisan db:seed` dan suite test: seeder selesai, 55 passed, 0 failed, 233 assertions; data lokal tetap 15 Course, 18 Participant, 16 Enrollment.

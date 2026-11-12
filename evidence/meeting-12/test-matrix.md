@@ -24,7 +24,7 @@ Tanggal verifikasi: 12 November 2026. Semua test feature menggunakan SQLite in-m
 | 16 | Relasi many-to-many membawa pivot status/timestamps; relasi hasMany tersedia | PASS |
 | 17 | Hapus Course menghapus Enrollment terkait tetapi mempertahankan Participant | PASS |
 | 18 | Hapus Participant menghapus Enrollment terkait tetapi mempertahankan Course | PASS |
-| 19 | ParticipantSeeder aman dijalankan berulang dan menghasilkan 3 data | PASS |
+| 19 | ParticipantSeeder aman dijalankan berulang dan menghasilkan 18 peserta (3 awal + 15 tambahan) | PASS |
 | 20 | Route/form pendaftaran lama `/pendaftaran` tetap tersedia | PASS |
 | 21 | Halaman detail dan edit enrollment dengan route model binding | PASS |
 | 22 | Update peserta/kursus/status dan flash sukses | PASS |
@@ -57,8 +57,8 @@ Laravel juga menjalankan 2 test contoh bawaan (unit dan feature); keduanya lulus
 
 - Perintah: `php artisan test`
 - Test: **55 passed, 0 failed**
-- Assertions: **232**
-- Durasi run final: **3.66 detik**
+- Assertions: **233**
+- Durasi run final: **3.95 detik**
 - Test database: SQLite in-memory
 
 Run awal menemukan satu kegagalan pada fixture test urutan pilihan (test mengharapkan Laravel Dasar tanpa membuat Course tersebut). Fixture diperbaiki. Hasil PASS di tabel ini adalah hasil run final setelah perbaikan.
@@ -74,7 +74,7 @@ Run awal menemukan satu kegagalan pada fixture test urutan pilihan (test menghar
 | SQLite foreign key list | PASS — 2 foreign key aktif pada tabel enrollments |
 | SQLite index list | PASS — `enrollments_participant_id_course_id_unique` |
 | SQLite participant email index | PASS — `participants_email_unique` |
-| Data lokal setelah EnrollmentSeeder | PASS — 15 courses, 3 participants, 16 enrollments (15 seeded + 1 existing yang dipertahankan) |
+| Data lokal setelah seeding | PASS — 15 courses, 18 participants, 16 enrollments (15 enrollment seeded + 1 existing yang dipertahankan) |
 | HTTP `/enrollments` dan `/enrollments/create` | PASS — keduanya status 200 |
 | `php artisan optimize:clear` | PASS |
 | `npm.cmd run build` | PASS — Vite 7.3.7, 123 modules transformed |

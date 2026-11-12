@@ -52,14 +52,14 @@ Pembaruan: 12 November 2026.
 | [x] | Migration enrollments | Foreign key ke participants dan courses dengan `constrained()->cascadeOnDelete()`, status default `registered`, unique gabungan participant/course. Migration incremental sudah `Ran`. |
 | [x] | Urutan migration dan perlindungan data Course | Migration baru bertanggal setelah migration Course. Tidak menjalankan `migrate:fresh`; tabel Course dan 15 data Course tetap ada. |
 | [x] | Relasi Eloquent | Relasi `hasMany`, `belongsTo`, dan many-to-many dengan pivot status/timestamps diperiksa dan diuji. |
-| [x] | Data peserta contoh | Alya, Bima, dan Citra tersedia melalui `ParticipantSeeder` yang idempotent; hitungan SQLite lokal 3 peserta. |
+| [x] | Data peserta contoh | Alya, Bima, Citra, dan 15 peserta tambahan tersedia melalui `ParticipantSeeder` idempotent; hitungan SQLite lokal 18 peserta. |
 | [x] | EnrollmentController | Controller PSR-4 bernama benar; index eager-load participant/course, create mengurutkan opsi, store memakai validasi dan flash success. |
 | [x] | Route enrollment | Route resource hanya index/create/store; `route:list` menunjukkan `/enrollments`, `/enrollments/create`, POST `/enrollments`. Route Course tetap tersedia. |
 | [x] | Form enrollment | CSRF, dropdown peserta/kursus, old input, validasi dekat field. Kursus berstatus `open` dipakai sebagai status aktif pada model Course project (status yang diizinkan existing adalah draft/open/closed). |
 | [x] | Laporan enrollment | Tabel relasional memuat peserta, kursus, start date, status, tombol tambah, flash message dari layout, dan empty state. |
 | [x] | Validasi dan pencegahan duplikasi | Rule unique bersyarat per participant, course harus open; composite unique diuji langsung pada SQLite. |
 | [x] | Cascade delete | Dua test khusus membuktikan penghapusan Course/Participant menghapus Enrollment terkait dan menjaga entitas satunya. Dilakukan di SQLite in-memory. |
-| [x] | Data lokal aman | Audit akhir: 15 Course, 3 Participant, dan 1 enrollment yang sudah ada; data Course dan enrollment existing dipertahankan. |
+| [x] | Data lokal aman | Data akhir: 15 Course, 18 Participant, dan 16 Enrollment; data enrollment existing dipertahankan. |
 | [x] | Automated test | `php artisan test`: 50 passed, 0 failed, 207 assertions; mencakup CRUD Course, enrollment, dan navigasi. SQLite in-memory. |
 | [x] | Route dan migration check | `php artisan route:list --except-vendor` menampilkan 16 route aplikasi, termasuk katalog, peserta, Course, dan enrollment; semua migration berstatus Ran. |
 | [x] | Cache dan asset UI | `php artisan optimize:clear` dan `npm.cmd run build` berhasil. |
@@ -81,7 +81,8 @@ Pembaruan: 12 November 2026.
 | [x] | Validasi update enrollment | Peserta/kursus tervalidasi, status dibatasi, enrollment dapat mempertahankan pasangan sendiri, dan pasangan duplikat ditolak. Dibuktikan lewat feature tests. |
 | [x] | Menu Kelola Enrollment | Navbar dan halaman daftar menghubungkan laporan, detail, edit, tambah, dan hapus enrollment. |
 | [x] | 15 data enrollment contoh | `EnrollmentSeeder` membuat 15 pasangan peserta-kursus via `firstOrCreate`, dipanggil oleh `DatabaseSeeder`, aman dijalankan ulang. |
-| [x] | Data lokal diverifikasi | Database lokal berisi 15 Course, 3 Participant, dan 16 Enrollment: 15 data contoh baru serta 1 data lama yang tetap dipertahankan. |
-| [x] | Pengujian final | `php artisan test`: 55 passed, 0 failed, 232 assertions menggunakan SQLite in-memory. Test mencakup detail/edit/update/delete dan seeder 15 data idempotent. |
+| [x] | Data lokal diverifikasi | Database lokal berisi 15 Course, 18 Participant, dan 16 Enrollment: 15 data enrollment contoh serta 1 data lama yang tetap dipertahankan. |
+| [x] | 15 peserta tambahan | `ParticipantSeeder` menambahkan 15 peserta unik di samping 3 peserta awal; seluruh seeder idempotent. Jumlah lokal setelah seed: 18 peserta. |
+| [x] | Pengujian final | `php artisan test`: 55 passed, 0 failed, 233 assertions menggunakan SQLite in-memory. Test mencakup detail/edit/update/delete, 15 enrollment, dan 15 peserta tambahan idempotent. |
 | [x] | Route, syntax, dan asset | Route resource diperiksa; PHP lint dan `npm.cmd run build` berhasil. Tidak menjalankan `migrate:fresh` atau `db:wipe`. |
 
